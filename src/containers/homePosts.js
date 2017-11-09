@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import '../App.css';
 import logo from '../logo.svg';
 import { fetchPosts } from '../actions/index'
+import PostListItem from '../components/postListItem';
+import { Button, ButtonGroup } from 'react-bootstrap'
 
 class homePosts extends Component {
   constructor(props) {
@@ -18,18 +20,32 @@ class homePosts extends Component {
   }
 
   render() {
+
+
+  	const { posts } = this.props
+  	if (!posts){
+  		return <div>Loading...</div>
+  	}
+
     return (
-      <div className="App">
-        <div className="navbar navbar-default" style={{backgroundColor: 'coral'}}>
-          <h3>Posting Engine</h3>
+      <div style={{maxWidth: '1000px', margin: 'auto'}}>
+        <div className="navbar navbar-default" style={{backgroundColor: 'coral', borderBottom: '2px solid black'}}>
+          <h2>Posting Engine</h2>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <p>
-          Talking to the backend yields these categories: <br/>
-          {this.state.backend}
-        </p>
+        <div style={{ marginBottom: '15px'}}>
+         <ButtonGroup>
+    		<Button>Create Post</Button>
+    		<Button>Middle</Button>
+    		<Button>Right</Button>
+  		</ButtonGroup> </div>
+        <ul className= "list-group" style={{width: '75%', float: 'left'}}>
+        {Object.keys(posts).map((key, post) =>{
+        	var p = posts[key]
+        	return <PostListItem {...p} key={p.id} />	
+        })}
+        </ul>
+
+      
       </div>
     );
   }

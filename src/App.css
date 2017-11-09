@@ -26,3 +26,20 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.btn {
+  margin: 1px;
+}
+
+.postItem {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.modifyPostB{
+  float: right;
+}
+
+.nav {
+ list-style-type: none; 
+}
