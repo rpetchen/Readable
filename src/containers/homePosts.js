@@ -1,52 +1,100 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import '../App.css';
-import logo from '../logo.svg';
-import { fetchPosts } from '../actions/index'
+import '../App.css'
+import { fetchPosts, categoriesPost } from '../actions/index'
 import PostListItem from '../components/postListItem';
-import { Button, ButtonGroup } from 'react-bootstrap'
+import { Button, ButtonGroup, DropdownButton, MenuItem, Modal } from 'react-bootstrap'
+import FilterDropDown from '../components/filters.js'
+import Categories from './categories.js'
+import DetailModal from './detailedModal.js'
 
 class homePosts extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      backend: 'backend-data'
+      filter:"timestamp",
+      sortText: "Sort By",
+      
+      
     }
   }
 
   componentDidMount() {
-    this.props.fetchPosts()
-  }
+    this.props.fetchPosts() 
+    
+}
+
+componentWillReceiveProps(newProps){
+	console.log(newProps)
+
+	let { category } = newProps.match.params 
+	let { path } = newProps.match
+	if (category && category !== this.props.match.params.category){
+		this.props.categoriesPost(newProps.match.params.category.toLowerCase())
+	}
+
+	if  (path === "/" && this.props.match.params.category)	{
+		this.props.fetchPosts() 
+	}
+}
+
+ filterSelect = (e, evt) => {
+ switch(e){
+
+  		case 'Date':
+  			this.setState({filter: "timestamp",
+  							sortText: e})
+  				break
+  		case '# Votes':
+  			this.setState({filter: "voteScore", 
+  							sortText: e})
+  				break
+  	    case '# Comments':
+  	     	  this.setState({filter: 'commentCount',
+  	     					sortText: e})
+  	    		break
+	}
+}
+
+
+
 
   render() {
 
-
-  	const { posts } = this.props
+  	var { posts } = this.props
+  	var { filter } = this.state
+  	const myPosts= []
   	if (!posts){
   		return <div>Loading...</div>
   	}
 
     return (
-      <div style={{maxWidth: '1000px', margin: 'auto'}}>
-        <div className="navbar navbar-default" style={{backgroundColor: 'coral', borderBottom: '2px solid black'}}>
-          <h2>Posting Engine</h2>
-        </div>
-        <div style={{ marginBottom: '15px'}}>
-         <ButtonGroup>
+      <div >
+        
+        <div style={{ marginBottom: '15px', width: '75%'}}>
+       
     		<Button>Create Post</Button>
-    		<Button>Middle</Button>
-    		<Button>Right</Button>
-  		</ButtonGroup> </div>
+    		<FilterDropDown text={this.state.sortText} filterSelect={this.filterSelect} />
+  	   
+  		</div>
         <ul className= "list-group" style={{width: '75%', float: 'left'}}>
-        {Object.keys(posts).map((key, post) =>{
-        	var p = posts[key]
-        	return <PostListItem {...p} key={p.id} />	
-        })}
+        { myPosts.concat(Object.values(posts))
+			.sort((a,b) => { 
+				
+				return a[filter] < b[filter]})
+			.map((p)=> <PostListItem {...p} key={p.id} />)}
         </ul>
+       <Categories style={{float: 'right'}} />
+
 
       
+     
       </div>
+
+
+
+
     );
   }
 }
@@ -56,4 +104,4 @@ function mapStateToProps({posts}){
 }
 
 
-export default connect(mapStateToProps, { fetchPosts })(homePosts)
+export default connect(mapStateToProps, { fetchPosts, categoriesPost})(homePosts)

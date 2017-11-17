@@ -1,13 +1,25 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Button } from 'react-bootstrap'
+import { Button, ButtonGroup } from 'react-bootstrap'
 import  FontAwesome from 'react-fontawesome'
+import { votePost } from '../actions/index'
 
-const PostListItem = ({title, body, author, commentCount, voteScore, id}) => (
 
+
+class PostListItem extends Component {
+ 
+ vote(option){
+  this.props.votePost(this.props.id, option)
+ }
+
+ render() {
+
+ var {title, author, body, voteScore, commentCount } = this.props
+
+ return (
   <li className = "list-group-item">
  
-  
     <h4>{title}</h4>
     
     <p>Author: {author}</p>
@@ -15,35 +27,43 @@ const PostListItem = ({title, body, author, commentCount, voteScore, id}) => (
     <p>{body}</p>
 
     <ul className = "postItem">
-    	<li>Vote Score: {voteScore} 
-    	<Button className = "btn" bsStyle="default" bsSize="xsmall">
+    	<li>Vote Score: {voteScore}
+    	
+    	<Button onClick={() => this.vote("upVote")} className = "btn" bsStyle="default" bsSize="xsmall">
  		 <FontAwesome
         	className='fa fa-thumbs-o-up'
         	name='fa-thumbs-o-up'
-        	size='1x'
+        	size='lg'
         	/>
 		</Button>
-		<Button className = "btn" bsStyle="default" bsSize="xsmall">
+		<Button onClick={() => this.vote("downVote")} className = "btn" bsStyle="default" bsSize="xsmall">
  		 <FontAwesome
         	className='fa fa-thumbs-o-down'
         	name='fa-thumbs-o-down'
-        	size='1x'
+        	size='lg'
         	/>
 		</Button>
-
-		<Button className = "btn modifyPostB" bsStyle="danger" bsSize="small">
- 		 Delete
+		</li>
+		<li className="commentText">
+		Comments: {commentCount}
+		</li>
+		<li>
+        <Button className = "btn modifyPostB" bsStyle="danger" bsSize="small">
+         Delete
+        </Button>
+        <Link to ="/asdf">
+		<Button className = "btn modifyPostB" bsStyle="info" bsSize="small">
+ 		 Edit Post
 		</Button>
-		<Button className = "btn modifyPostB" bsStyle="primary" bsSize="small">
- 		 Edit
-		</Button>
+        </Link>
     	</li>
-    	
     </ul>
   
   </li>
-);
+    );
+  }
+}
 
 
 
-export default PostListItem
+export default connect(null, { votePost })(PostListItem )

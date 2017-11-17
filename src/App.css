@@ -34,12 +34,30 @@
 .postItem {
   list-style-type: none;
   padding-left: 0;
+
+}
+
+.postItem li {
+  display: inline;
+}
+
+.postItem li .btn-group{
+float: right;
 }
 
 .modifyPostB{
   float: right;
+  
 }
 
 .nav {
  list-style-type: none; 
+}
+
+.commentText{
+ margin-left: 20px;
+}
+
+.list-group-item{
+  margin: 5px;
 }
