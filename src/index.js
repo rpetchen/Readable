@@ -4,6 +4,7 @@ import './index.css';
 
 import registerServiceWorker from './registerServiceWorker';
 import HomePosts from './containers/homePosts'
+import PostView from './containers/postView'
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import promise from 'redux-promise'
@@ -24,7 +25,8 @@ ReactDOM.render(<Provider store={store}>
     </div>
     <Switch>
      	<Route exact path="/" component={HomePosts }  />
-     	<Route path="/:category"  component={HomePosts } />
+     	<Route exact path="/categories/:category"  component={HomePosts } />
+     	<Route exact path="/post/:id" component={ PostView } />
      	<Route component={PageNotFound}/>
    
 	</Switch>

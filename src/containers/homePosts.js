@@ -8,6 +8,7 @@ import { Button, ButtonGroup, DropdownButton, MenuItem, Modal } from 'react-boot
 import FilterDropDown from '../components/filters.js'
 import Categories from './categories.js'
 import DetailModal from './detailedModal.js'
+import { categories } from '../config/config.js'
 
 class homePosts extends Component {
   constructor(props) {
@@ -26,14 +27,13 @@ class homePosts extends Component {
 }
 
 componentWillReceiveProps(newProps){
-	console.log(newProps)
-
 	let { category } = newProps.match.params 
 	let { path } = newProps.match
-	if (category && category !== this.props.match.params.category){
-		this.props.categoriesPost(newProps.match.params.category.toLowerCase())
-	}
+	
 
+	if (category && category !== this.props.match.params.category){
+		this.props.categoriesPost(newProps.match.params.category)
+	}
 	if  (path === "/" && this.props.match.params.category)	{
 		this.props.fetchPosts() 
 	}
@@ -41,7 +41,6 @@ componentWillReceiveProps(newProps){
 
  filterSelect = (e, evt) => {
  switch(e){
-
   		case 'Date':
   			this.setState({filter: "timestamp",
   							sortText: e})
@@ -57,11 +56,7 @@ componentWillReceiveProps(newProps){
 	}
 }
 
-
-
-
   render() {
-
   	var { posts } = this.props
   	var { filter } = this.state
   	const myPosts= []
@@ -83,18 +78,10 @@ componentWillReceiveProps(newProps){
 			.sort((a,b) => { 
 				
 				return a[filter] < b[filter]})
-			.map((p)=> <PostListItem {...p} key={p.id} />)}
+			.map((p)=> <PostListItem {...p} key={p.id} /> )}
         </ul>
-       <Categories style={{float: 'right'}} />
-
-
-      
-     
+       <Categories style={{float: 'right'}} />    
       </div>
-
-
-
-
     );
   }
 }

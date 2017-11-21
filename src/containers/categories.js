@@ -1,22 +1,36 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { categories } from '../config/config.js'
+import { fetchCategories } from '../actions/index'
 
 
-import {  Nav, NavItem } from 'react-bootstrap'
 
-const PostCategories=(props)=>{
+class PostCategories extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+     
+    }
+  }
 
+  componentDidMount() {
+    this.props.fetchCategories() 
+}
+
+render () {
+var {categories} = this.props
+if (!categories){
+  return <div>Loading...</div>
+}
     return (
       <div >
             <ul >
                 <Link  to={`/`}>
                   <li >View All Post Categories</li >
                 </Link>
-              {categories.map((cat, i) =>(
-                  <Link key={i} to={`/${cat}`}>
-                  <li >View Post By Category: {cat}</li >
+                {categories.map((cat, i) =>(
+                  <Link key={i} to={`/categories/${cat.name}`}>
+                  <li >View Post By Category: {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}</li >
                   </Link>
                   )
                  )}
@@ -27,7 +41,16 @@ const PostCategories=(props)=>{
        
       </div>
     );
+    }
   }
 
 
-export default PostCategories
+
+
+
+function mapStateToProps({categories}){
+  return {categories: categories}
+}
+
+
+export default connect(mapStateToProps, { fetchCategories})(PostCategories)

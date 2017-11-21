@@ -61,3 +61,7 @@ float: right;
 .list-group-item{
   margin: 5px;
 }
+
+hr {
+  margin: 0;
+}

@@ -15,15 +15,15 @@ class PostListItem extends Component {
 
  render() {
 
- var {title, author, body, voteScore, commentCount } = this.props
+ var {title, author, body, voteScore, commentCount, id } = this.props
 
  return (
   <li className = "list-group-item">
- 
+    <Link key = {id} to={`/post/${id}`}>
     <h4>{title}</h4>
-    
+    </Link>
     <p>Author: {author}</p>
-
+    
     <p>{body}</p>
 
     <ul className = "postItem">

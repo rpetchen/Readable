@@ -3,7 +3,8 @@ import _ from 'lodash';
 export const FETCH_POSTS = 'fetch_posts'
 export const VOTE_POST = 'vote_post'
 export const CAT_POST = 'cat_post'
-
+export const FETCH_CAT = 'fetch_cat'
+export const FETCH_POST = 'fetch_post'
 const url = `http://localhost:3001`;
 
 export function fetchPosts() {
@@ -68,4 +69,35 @@ return {
   };
 }
 
+export function fetchCategories() {
+const ext = `/categories`
+let request =  fetch(url+ext, { headers: { 'Authorization': 'ryanP' },
+                 credentials: 'include' } )
+      .then( (res) => { return(res.json()) })
+      .then((data) => {
+      
+      return data.categories
+       })
 
+return {
+    type: FETCH_CAT,
+    payload: request
+  };
+  
+}
+
+export function fetchPost(id) {
+const ext = `/posts/${id}`
+let request =  fetch(url+ext, { headers: { 'Authorization': 'ryanP' },
+                 credentials: 'include' } )
+      .then( (res) => { return(res.json()) })
+      .then((data) => {
+     console.log(data)
+       })
+
+
+  return {
+    type: FETCH_POST,
+    payload: request
+  };
+}
