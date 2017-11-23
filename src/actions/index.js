@@ -5,6 +5,7 @@ export const VOTE_POST = 'vote_post'
 export const CAT_POST = 'cat_post'
 export const FETCH_CAT = 'fetch_cat'
 export const FETCH_POST = 'fetch_post'
+export const FETCH_COMMENTS = "fetch_comments"
 const url = `http://localhost:3001`;
 
 export function fetchPosts() {
@@ -92,7 +93,7 @@ let request =  fetch(url+ext, { headers: { 'Authorization': 'ryanP' },
                  credentials: 'include' } )
       .then( (res) => { return(res.json()) })
       .then((data) => {
-     console.log(data)
+      return data
        })
 
 
@@ -101,3 +102,21 @@ let request =  fetch(url+ext, { headers: { 'Authorization': 'ryanP' },
     payload: request
   };
 }
+
+export function fetchComments(id){
+  const ext = `/posts/${id}/comments`
+  let request =  fetch(url+ext, { headers: { 'Authorization': 'ryanP' },
+                 credentials: 'include' } )
+      .then( (res) => { return(res.json()) })
+      .then((data) => {
+        return data
+       })
+
+
+  return {
+    type: FETCH_COMMENTS,
+    payload: request
+  };
+}
+
+

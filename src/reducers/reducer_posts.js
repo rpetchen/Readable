@@ -1,4 +1,4 @@
-import { FETCH_POSTS, VOTE_POST, CAT_POST } from '../actions/index';
+import { FETCH_POSTS, VOTE_POST, CAT_POST, FETCH_POST } from '../actions/index';
 
 
 export default function(state = {}, action) {
@@ -9,8 +9,9 @@ export default function(state = {}, action) {
 		case VOTE_POST:
 			return {...state, [action.payload.id] : action.payload}
 		case CAT_POST:
-		console.log(action.payload)
 			return action.payload
+		case FETCH_POST:
+			return {...state, [action.payload.id]: action.payload}
 		default:
 			return state;
 	}
