@@ -65,3 +65,12 @@ float: right;
 hr {
   margin: 0;
 }
+
+input {
+  width: 400px;
+}
+
+textarea {
+  width: 400px;
+  color: black;
+}

@@ -51,11 +51,11 @@ class PostListItem extends Component {
         <Button className = "btn modifyPostB" bsStyle="danger" bsSize="small">
          Delete
         </Button>
-        <Link to ="/asdf">
+     
 		<Button className = "btn modifyPostB" bsStyle="info" bsSize="small">
  		 Edit Post
 		</Button>
-        </Link>
+        
     	</li>
     </ul>
   

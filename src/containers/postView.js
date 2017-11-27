@@ -1,27 +1,40 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchPost, fetchComments } from '../actions/index'
+import { fetchPost, fetchComments, fetchComment } from '../actions/index'
 import PostDetail from '../components/postDetail'
 import CommentDetail from '../components/commentDetails'
 import CommentModal from '../containers/commentModal'
 
-import {  Nav, NavItem, ListGroup, ListGroupItem, Panel   } from 'react-bootstrap'
+import {  Nav, NavItem, ListGroup, ListGroupItem, Panel, Button  } from 'react-bootstrap'
 
 class PostDetails extends Component {
  constructor(props) {
     super(props);
     this.state = {
-      showModal : false
+      showModal : false,
+      comment: ''
     }
   }
 
-showModal=(e)=>{
-  this.setState({showModal : true})
+editComment=(id)=>{
+  this.props.fetchComment(id, (data)=>{
+    this.setState({comment: data,
+                  commentId: id,
+                   showModal: true})
+  })
 }
 
 closeModal=()=>{
-this.setState({showModal : false})
+this.setState({
+  showModal : false,
+  comment: '',
+  commentId: ''})
+}
+
+createComment=()=>{
+this.setState({
+  showModal : true })
 }
 
   componentDidMount() {
@@ -34,6 +47,7 @@ render () {
 
 var {post} = this.props
 var {comments} =this.props
+const myComments = []
 
 if (!post){
   return <div>Loading...</div>
@@ -41,14 +55,23 @@ if (!post){
     return (
 
       <div >
-      <CommentModal close={this.closeModal} showModal={this.state.showModal}/>
+      <CommentModal close={this.closeModal} body={this.state.comment.body} author={this.state.comment.author} showModal={this.state.showModal} id={this.state.commentId}/>
       <PostDetail {...post} />
+
       <Panel header="Comments" bsStyle="info">
-      { (comments.length > 0) ?  
+      { (Object.keys(comments).length > 0) ?  
       <ListGroup>
-      {comments.map((c, i)=> <ListGroupItem> <CommentDetail {...c} showModal={this.showModal}/> </ListGroupItem> )}
+      {myComments.concat(Object.values(comments))
+        .sort((a,b)=> {
+        return b.voteScore - a.voteScore})
+        .map((c, i)=> <ListGroupItem> <CommentDetail {...c} showModal={this.editComment}/> </ListGroupItem> )}
       </ListGroup> :
       <h2> No Comments!</h2> }
+
+     
+      <Button className = "btn modifyPostB" bsStyle="info" bsSize="small" onClick={this.createComment}>
+        Add Comment
+      </Button>
       </Panel>
       </div>
     );
@@ -65,4 +88,4 @@ if (!post){
 )
 
 
-export default connect(mapStateToProps, { fetchPost, fetchComments})(PostDetails)
+export default connect(mapStateToProps, { fetchPost, fetchComments, fetchComment})(PostDetails)

@@ -1,41 +1,74 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap'
-
-
+import { Field, reduxForm } from 'redux-form'
+import { editComment } from '../actions/index'
 
 class CommentModal extends Component {
+constructor(props) {
+    super(props);
+  }
 
 
 
+submit = (values) => {
+    // print the form values to the console
+    this.props.editComment(this.props.id, values, ()=>{this.props.resetForn()})
+    
+    this.props.close()
+
+}
+
+required = value => value ? undefined : 'Required'
+renderField = ({ input, label, type, textarea, meta: { touched, error, warning } }) => {
+
+  const textareaType = <textarea {...input} placeholder={label}  type={type} />;
+  const inputType = <input {...input} placeholder={label}  type={type} />;
+  return(
+  <div>
+    <label>{label}</label>
+    <div>
+      {textarea ? textareaType : inputType}
+     
+      {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+    </div>
+  </div>
+  )
+}
 
   render() {
 
- 
+  
+
+  var {id} = this.props
+  const { handleSubmit} = this.props
     return (
 
    		<Modal show={this.props.showModal} onHide={this.props.close}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>{id}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h4>Text in a modal</h4>
-            <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula.</p>
+             <form onSubmit={ handleSubmit(this.submit) }>
+               
+                <div>
+                 <label>Comment Body</label>
+                  <div>
+                   <Field
+                    name="body"
+                    component={this.renderField}
+                    type="text"
+                    placeholder={"Comment Text"}
+                    textarea={true}
+                    validate={this.required}
 
+                    
+                    />
+                  </div>
+                </div>
             
-
-            <hr />
-
-            <h4>Overflowing text to show scroll behavior</h4>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
-            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
-            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-            <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                <button type="submit">Submit</button>
+              </form>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={this.props.close}>Close</Button>
@@ -48,7 +81,20 @@ class CommentModal extends Component {
 }
 
 
+ 
+ const mapStateToProps=(state, ownProps)=>{
+  return {
+    initialValues: {
+    body: ownProps.body
+  }
+  }
+ }
+
+var CommentForm = reduxForm({
+  form: 'CommentModal',
+  enableReinitialize: true,
+})(CommentModal)
 
 
-export default connect(null)(CommentModal)
+export default connect(mapStateToProps, {editComment})(CommentForm)
 

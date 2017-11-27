@@ -6,6 +6,10 @@ export const CAT_POST = 'cat_post'
 export const FETCH_CAT = 'fetch_cat'
 export const FETCH_POST = 'fetch_post'
 export const FETCH_COMMENTS = "fetch_comments"
+export const FETCH_COMMENT = "fetch_comment"
+export const EDIT_COMMENT = "edit_comment"
+
+
 const url = `http://localhost:3001`;
 
 export function fetchPosts() {
@@ -56,7 +60,7 @@ let request = fetch(url+ext,  {method: "GET",
                  credentials: 'include'}) 
       .then( (res) => { return res.json()})
       .then((data) => {
-      console.log(data)
+    
         var obj = {}
        for (var i =0; i < data.length; i++){
         obj[data[i].id] = data[i]
@@ -109,8 +113,13 @@ export function fetchComments(id){
                  credentials: 'include' } )
       .then( (res) => { return(res.json()) })
       .then((data) => {
-        return data
+         var obj = {}
+       for (var i =0; i < data.length; i++){
+        obj[data[i].id] = data[i]
+       }
+       return obj
        })
+       
 
 
   return {
@@ -119,4 +128,45 @@ export function fetchComments(id){
   };
 }
 
+export function fetchComment(id, callback){
+  const ext = `/comments/${id}`
+  let request =  fetch(url+ext, { headers: { 'Authorization': 'ryanP' },
+                 credentials: 'include' } )
+      .then( (res) => { return(res.json()) })
+      .then((data) => {
+        
+        callback(data)
+        return data
+       })
 
+
+  return {
+    type: FETCH_COMMENT,
+    payload: request
+  };
+}
+
+
+export function editComment(id, body, callback){
+
+const ext = `/comments/${id}`
+var timestamp = Date.now();
+var body = body.body
+console.log(typeof(timestamp))
+let request =  fetch(url+ext,  {method: "PUT",
+         headers: { 'Authorization': 'ryanP',
+                "Content-Type": "application/json" },
+                 credentials: 'include',
+                 body: JSON.stringify({body, timestamp})}) 
+      .then( (res) => { return res.json()})
+      .then((data) => {
+       
+       return data
+       })
+
+
+  return {
+    type: EDIT_COMMENT,
+    payload: request
+  };
+}
