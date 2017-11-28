@@ -19,8 +19,8 @@ const date = new Date(timestamp).toString().substring(0,15)
       <h4>{author}</h4>
       <p>{date}</p>
       <p>{voteScore}</p>
-      <Button onClick={()=> this.props.showModal(id)}> Comment </Button>
-      <Button  > Delete  </Button>
+      <Button onClick={()=> this.props.showModal(id)}> Edit Comment </Button>
+      <Button onClick={()=> this.props.deleteComment(id)} > Delete Comment </Button>
      </div>
 
 

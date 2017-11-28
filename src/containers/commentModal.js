@@ -10,20 +10,36 @@ constructor(props) {
   }
 
 
+componentWillReceiveProps(nextProps) {
+
+if (this.props.popUpState !== nextProps.popUpState) {
+
+this.props.initialize();
+}
+}
 
 submit = (values) => {
-    // print the form values to the console
-    this.props.editComment(this.props.id, values, ()=>{this.props.resetForn()})
+    this.props.reset()
+    // this.props.editComment(this.props.id, values, ()=>{this.props.reset()})
     
     this.props.close()
 
 }
 
-required = value => value ? undefined : 'Required'
-renderField = ({ input, label, type, textarea, meta: { touched, error, warning } }) => {
+commentAction=()=>{
+  return true
+  
+}
+
+close = () =>{
+  this.props.close()
+}
+
+required = value => value ? undefined : 'Required Field'
+renderField = ({ disabled, input, label, type, textarea, meta: { touched, error, warning } }) => {
 
   const textareaType = <textarea {...input} placeholder={label}  type={type} />;
-  const inputType = <input {...input} placeholder={label}  type={type} />;
+  const inputType = <input {...input} placeholder={label}  type={type} disabled={disabled}/>;
   return(
   <div>
     <label>{label}</label>
@@ -44,7 +60,7 @@ renderField = ({ input, label, type, textarea, meta: { touched, error, warning }
   const { handleSubmit} = this.props
     return (
 
-   		<Modal show={this.props.showModal} onHide={this.props.close}>
+   		<Modal show={this.props.showModal} onHide={this.close}>
           <Modal.Header closeButton>
             <Modal.Title>{id}</Modal.Title>
           </Modal.Header>
@@ -52,7 +68,7 @@ renderField = ({ input, label, type, textarea, meta: { touched, error, warning }
              <form onSubmit={ handleSubmit(this.submit) }>
                
                 <div>
-                 <label>Comment Body</label>
+           
                   <div>
                    <Field
                     name="body"
@@ -61,9 +77,18 @@ renderField = ({ input, label, type, textarea, meta: { touched, error, warning }
                     placeholder={"Comment Text"}
                     textarea={true}
                     validate={this.required}
-
-                    
+                    label = "Comment"
                     />
+                    <Field
+                    name="author"
+                    component={this.renderField}
+                    type="text"
+                    placeholder={"Author"}
+                    textarea={false}
+                    validate={this.required}
+                     label = "Author"
+                    disabled = {this.props.authorAction}
+                  />
                   </div>
                 </div>
             
@@ -71,7 +96,7 @@ renderField = ({ input, label, type, textarea, meta: { touched, error, warning }
               </form>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.props.close}>Close</Button>
+            <Button onClick={()=>{this.props.close(this.props.resetForm)}}>Close</Button>
           </Modal.Footer>
         </Modal>
 
@@ -85,7 +110,8 @@ renderField = ({ input, label, type, textarea, meta: { touched, error, warning }
  const mapStateToProps=(state, ownProps)=>{
   return {
     initialValues: {
-    body: ownProps.body
+    body: ownProps.body,
+    author: ownProps.author
   }
   }
  }
@@ -93,6 +119,7 @@ renderField = ({ input, label, type, textarea, meta: { touched, error, warning }
 var CommentForm = reduxForm({
   form: 'CommentModal',
   enableReinitialize: true,
+  destroyOnUnmount: false
 })(CommentModal)
 
 

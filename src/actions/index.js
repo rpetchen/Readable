@@ -8,7 +8,7 @@ export const FETCH_POST = 'fetch_post'
 export const FETCH_COMMENTS = "fetch_comments"
 export const FETCH_COMMENT = "fetch_comment"
 export const EDIT_COMMENT = "edit_comment"
-
+export const DELETE_COMMENT = "delete_comment"
 
 const url = `http://localhost:3001`;
 
@@ -151,8 +151,8 @@ export function editComment(id, body, callback){
 
 const ext = `/comments/${id}`
 var timestamp = Date.now();
-var body = body.body
-console.log(typeof(timestamp))
+var body = body.body;
+
 let request =  fetch(url+ext,  {method: "PUT",
          headers: { 'Authorization': 'ryanP',
                 "Content-Type": "application/json" },
@@ -169,4 +169,26 @@ let request =  fetch(url+ext,  {method: "PUT",
     type: EDIT_COMMENT,
     payload: request
   };
+}
+
+export function deleteComment(id){
+
+const ext = `/comments/${id}`
+
+let request =  fetch(url+ext,  {method: "DELETE",
+         headers: { 'Authorization': 'ryanP'},
+                 credentials: 'include'
+               })      
+      .then( (res) => { return res.json()})
+      .then((data) => {
+       console.log(data)
+       return data
+       })
+
+
+  return {
+    type: DELETE_COMMENT,
+    payload: request
+  };
+
 }
