@@ -1,4 +1,4 @@
-import { FETCH_COMMENTS, FETCH_COMMENT, EDIT_COMMENT, DELETE_COMMENT } from '../actions/index';
+import { FETCH_COMMENTS, FETCH_COMMENT, EDIT_COMMENT, DELETE_COMMENT, ADD_COMMENT, VOTE_COMMENT} from '../actions/index';
 
 
 export default function(state = [], action) {
@@ -13,7 +13,11 @@ export default function(state = [], action) {
 		case DELETE_COMMENT:
 			let {[action.payload.id]: deletedItem, ...rest} = state
 			return rest
-		
+		case ADD_COMMENT:
+			 return	{...state, [action.payload.id] : action.payload}
+		case VOTE_COMMENT:
+		 	console.log(action)
+			return {...state, [action.payload.id] : action.payload}
 		default:
 			return state;
 	}

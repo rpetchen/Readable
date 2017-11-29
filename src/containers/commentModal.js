@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap'
-import { Field, reduxForm } from 'redux-form'
-import { editComment } from '../actions/index'
+import { Field, reduxForm, reset } from 'redux-form'
+import { editComment, addComment } from '../actions/index'
 
 class CommentModal extends Component {
 constructor(props) {
@@ -13,27 +13,22 @@ constructor(props) {
 componentWillReceiveProps(nextProps) {
 
 if (this.props.popUpState !== nextProps.popUpState) {
-
 this.props.initialize();
 }
 }
 
-submit = (values) => {
-    this.props.reset()
-    // this.props.editComment(this.props.id, values, ()=>{this.props.reset()})
-    
-    this.props.close()
-
-}
-
-commentAction=()=>{
-  return true
-  
-}
-
-close = () =>{
+close=()=>{
   this.props.close()
+  this.props.reset()
 }
+
+
+submit = (values) => {
+   this.props.action === "edit" ? this.props.editComment(this.props.id, values, ()=>{this.close()})
+    : this.props.addComment(values, this.props.parentID, ()=>{this.close()}) 
+}
+
+
 
 required = value => value ? undefined : 'Required Field'
 renderField = ({ disabled, input, label, type, textarea, meta: { touched, error, warning } }) => {
@@ -60,7 +55,7 @@ renderField = ({ disabled, input, label, type, textarea, meta: { touched, error,
   const { handleSubmit} = this.props
     return (
 
-   		<Modal show={this.props.showModal} onHide={this.close}>
+   		<Modal show={this.props.showModal} onHide={this.props.close}>
           <Modal.Header closeButton>
             <Modal.Title>{id}</Modal.Title>
           </Modal.Header>
@@ -96,7 +91,7 @@ renderField = ({ disabled, input, label, type, textarea, meta: { touched, error,
               </form>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={()=>{this.props.close(this.props.resetForm)}}>Close</Button>
+            <Button onClick={this.props.close}>Close</Button>
           </Modal.Footer>
         </Modal>
 
@@ -123,5 +118,5 @@ var CommentForm = reduxForm({
 })(CommentModal)
 
 
-export default connect(mapStateToProps, {editComment})(CommentForm)
+export default connect(mapStateToProps, {editComment, addComment})(CommentForm)
 

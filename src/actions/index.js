@@ -9,6 +9,10 @@ export const FETCH_COMMENTS = "fetch_comments"
 export const FETCH_COMMENT = "fetch_comment"
 export const EDIT_COMMENT = "edit_comment"
 export const DELETE_COMMENT = "delete_comment"
+export const ADD_COMMENT = "add_comment"
+export const VOTE_COMMENT = "vote_comment"
+
+const uuidv1 = require('uuid/v1');
 
 const url = `http://localhost:3001`;
 
@@ -181,13 +185,64 @@ let request =  fetch(url+ext,  {method: "DELETE",
                })      
       .then( (res) => { return res.json()})
       .then((data) => {
-       console.log(data)
+      
        return data
        })
 
 
   return {
     type: DELETE_COMMENT,
+    payload: request
+  };
+
+}
+
+export function addComment(comment, id, callback){
+
+comment.timestamp= Date.now();
+comment.parentId= id;
+comment.id = uuidv1();
+
+const ext = `/comments`;
+
+
+let request =  fetch(url+ext,  {method: "POST",
+         headers: { 'Authorization': 'ryanP',
+                "Content-Type": "application/json" },
+                 credentials: 'include',
+                 body: JSON.stringify(comment)})     
+      .then( (res) => { return res.json()})
+      .then((data) => {
+        callback()
+       return data
+       })
+
+
+  return {
+    type: ADD_COMMENT,
+    payload: request
+  };
+
+}
+
+export function voteComment(option, id){
+
+const ext = `/comments/${id}`;
+
+let request =  fetch(url+ext,  {method: "POST",
+         headers: { 'Authorization': 'ryanP',
+                "Content-Type": "application/json" },
+                 credentials: 'include',
+                 body: JSON.stringify({option})})     
+      .then((res) => {return res.json()})
+      .then((data) => {
+        console.log(data)
+       return data
+       })
+
+    
+  return {
+    type: VOTE_COMMENT,
     payload: request
   };
 
