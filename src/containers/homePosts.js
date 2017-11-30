@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import '../App.css'
-import { fetchPosts, categoriesPost } from '../actions/index'
+import { fetchPosts, categoriesPost, deletePost } from '../actions/index'
 import PostListItem from '../components/postListItem';
 import { Button, ButtonGroup, DropdownButton, MenuItem, Modal } from 'react-bootstrap'
 import FilterDropDown from '../components/filters.js'
@@ -23,6 +23,7 @@ class homePosts extends Component {
 
   componentDidMount() {
     this.props.fetchPosts() 
+    console.log(this.props.history.push)
     
 }
 
@@ -37,6 +38,10 @@ componentWillReceiveProps(newProps){
 	if  (path === "/" && this.props.match.params.category)	{
 		this.props.fetchPosts() 
 	}
+}
+
+deletePost = (id) =>{
+  this.props.deletePost(id)
 }
 
  filterSelect = (e, evt) => {
@@ -56,6 +61,11 @@ componentWillReceiveProps(newProps){
 	}
 }
 
+editPost=(id)=>{
+    this.props.history.push(`EditPost/${id}`)
+ }
+
+
   render() {
   	var { posts } = this.props
   	var { filter } = this.state
@@ -68,19 +78,25 @@ componentWillReceiveProps(newProps){
       <div >
         
         <div style={{ marginBottom: '15px', width: '75%'}}>
-       
+        <Link to="CreatePost">
     		<Button>Create Post</Button>
+        </Link>
     		<FilterDropDown text={this.state.sortText} filterSelect={this.filterSelect} />
   	   
   		</div>
+      
         <ul className= "list-group" style={{width: '75%', float: 'left'}}>
-        { myPosts.concat(Object.values(posts))
+        { (Object.keys(posts).length > 0)?
+         myPosts.concat(Object.values(posts))
 			.sort((a,b) => { 
 				
 				return a[filter] < b[filter]})
-			.map((p)=> <PostListItem {...p} key={p.id} /> )}
+			.map((p)=> <PostListItem deletePost={this.deletePost} {...p} edit={this.editPost} key={p.id} /> ):
+         <li className = "list-group-item"> <h3> Add your FIRST Post!</h3></li>}
         </ul>
-       <Categories style={{float: 'right'}} />    
+               
+       <Categories />    
+     
       </div>
     );
   }
@@ -91,4 +107,4 @@ function mapStateToProps({posts}){
 }
 
 
-export default connect(mapStateToProps, { fetchPosts, categoriesPost})(homePosts)
+export default connect(mapStateToProps, { fetchPosts, categoriesPost, deletePost})(homePosts)

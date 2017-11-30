@@ -47,7 +47,6 @@ float: right;
 
 .modifyPostB{
   float: right;
-  
 }
 
 .nav {
@@ -78,4 +77,9 @@ textarea {
 
 a {
     text-decoration: none !important;
+}
+
+.categories{
+  
+  list-style: none;
 }

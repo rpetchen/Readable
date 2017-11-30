@@ -1,4 +1,4 @@
-import { FETCH_POSTS, VOTE_POST, CAT_POST, FETCH_POST } from '../actions/index';
+import { FETCH_POSTS, VOTE_POST, CAT_POST, FETCH_POST, DELETE_POST } from '../actions/index';
 
 
 export default function(state = {}, action) {
@@ -12,6 +12,9 @@ export default function(state = {}, action) {
 			return action.payload
 		case FETCH_POST:
 			return {...state, [action.payload.id]: action.payload}
+		case DELETE_POST:
+			let {[action.payload.id]: deletedItem, ...rest} = state
+			return rest
 		default:
 			return state;
 	}

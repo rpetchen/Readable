@@ -11,6 +11,7 @@ import promise from 'redux-promise'
 import reducers from './reducers';
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 import PageNotFound from './notFound.js'
+import PostForm from './containers/PostForm'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -28,8 +29,11 @@ ReactDOM.render(<Provider store={store}>
     </div>
     <Switch>
      	<Route exact path="/" component={HomePosts }  />
+        <Route exact path="/EditPost/:id" component={ PostForm } />
      	<Route exact path="/categories/:category"  component={HomePosts } />
-     	<Route exact path="/post/:id" component={ PostView } />
+     	<Route exact path="/:category/:id" component={ PostView } />
+        <Route exact path="/CreatePost" component={ PostForm } />
+        
      	<Route component={PageNotFound}/>
    
 	</Switch>

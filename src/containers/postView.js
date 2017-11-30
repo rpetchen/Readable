@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchPost, fetchComments, fetchComment, deleteComment, voteComment } from '../actions/index'
+import { fetchPost, fetchComments, fetchComment, deleteComment, voteComment, votePost } from '../actions/index'
 import PostDetail from '../components/postDetail'
 import CommentDetail from '../components/commentDetails'
 import CommentModal from '../containers/commentModal'
@@ -49,6 +49,10 @@ this.setState({
   action: 'create' })
 }
 
+votePost=(id, option)=>{
+  this.props.votePost(id, option)
+}
+
   componentDidMount() {
     this.props.fetchPost(this.props.match.params.id) 
     this.props.fetchComments(this.props.match.params.id) 
@@ -68,7 +72,7 @@ if (!post){
 
       <div >
       <CommentModal close={this.closeModal} parentID = {this.props.post.id} action={this.state.action} authorAction={this.state.disableAuthor} body={this.state.comment.body} author={this.state.comment.author} showModal={this.state.showModal} id={this.state.commentId}/>
-      <PostDetail {...post} />
+      <PostDetail votePost = {this.votePost} {...post} />
 
       <Panel header="Comments" bsStyle="info">
       { (Object.keys(comments).length > 0) ?  
@@ -101,4 +105,4 @@ if (!post){
 )
 
 
-export default connect(mapStateToProps, { fetchPost, fetchComments, fetchComment, deleteComment, voteComment})(PostDetails)
+export default connect(mapStateToProps, { fetchPost, fetchComments, fetchComment, deleteComment, voteComment, votePost})(PostDetails)

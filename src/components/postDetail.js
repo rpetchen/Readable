@@ -1,9 +1,14 @@
 import React from 'react';
 import { Panel, Button } from 'react-bootstrap'
-const PostDetail=({id, title, body, author, timestamp, voteScore})=>{
+import  FontAwesome from 'react-fontawesome'
+
+const PostDetail=({id, title, body, author, timestamp, voteScore, votePost})=>{
 
 const date = new Date(timestamp).toString().substring(0,15)
 
+const vote = (option, id)=>{
+votePost(id, option)
+}
 	return (
 	
 	<Panel header={`Post Title: ${title}`} style={{overflowWrap: 'break-word'}} bsStyle="primary">
@@ -18,6 +23,20 @@ const date = new Date(timestamp).toString().substring(0,15)
        
        <Button className = "btn modifyPostB" bsStyle="info" bsSize="small">
         Edit Post
+      </Button>
+       <Button onClick={() => vote("upVote", id)} className = "btn" bsStyle="default" bsSize="xsmall">
+        <FontAwesome
+            className='fa fa-thumbs-o-up'
+            name='fa-thumbs-o-up'
+            size='lg'
+            />
+      </Button>
+        <Button onClick={() => vote("downVote", id)} className = "btn" bsStyle="default" bsSize="xsmall">
+        <FontAwesome
+          className='fa fa-thumbs-o-down'
+          name='fa-thumbs-o-down'
+          size='lg'
+          />
       </Button>
      </Panel>
 

@@ -24,7 +24,7 @@ if (!categories){
 }
     return (
       <div >
-            <ul >
+            <ul className="categories">
                 <Link  to={`/`}>
                   <li >View All Post Categories</li >
                 </Link>

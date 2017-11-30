@@ -11,6 +11,7 @@ export const EDIT_COMMENT = "edit_comment"
 export const DELETE_COMMENT = "delete_comment"
 export const ADD_COMMENT = "add_comment"
 export const VOTE_COMMENT = "vote_comment"
+export const DELETE_POST = "delete_post"
 
 const uuidv1 = require('uuid/v1');
 
@@ -246,4 +247,24 @@ let request =  fetch(url+ext,  {method: "POST",
     payload: request
   };
 
+}
+
+export function deletePost(id){
+const ext = `/posts/${id}`
+
+let request =  fetch(url+ext,  {method: "DELETE",
+         headers: { 'Authorization': 'ryanP'},
+                 credentials: 'include'
+               })      
+      .then( (res) => { return res.json()})
+      .then((data) => {
+      
+       return data
+       })
+
+
+  return {
+    type: DELETE_POST,
+    payload: request
+  };
 }

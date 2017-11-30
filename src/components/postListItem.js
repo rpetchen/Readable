@@ -8,18 +8,29 @@ import { votePost } from '../actions/index'
 
 
 class PostListItem extends Component {
+
  
  vote(option){
   this.props.votePost(this.props.id, option)
  }
 
+ deletePost=(id)=>{
+    this.props.deletePost(id)
+ }
+
+editPost=(id)=>{
+    this.props.edit(id)
+ }
+
+
+
  render() {
 
- var {title, author, body, voteScore, commentCount, id } = this.props
+ var {title, author, body, voteScore, commentCount, id, category } = this.props
 
  return (
   <li className = "list-group-item">
-    <Link key = {id} to={`/post/${id}`}>
+    <Link key = {id} to={`/${category}/${id}`}>
     <h4>{title}</h4>
     </Link>
     <p>Author: {author}</p>
@@ -47,15 +58,12 @@ class PostListItem extends Component {
 		<li className="commentText">
 		Comments: {commentCount}
 		</li>
-		<li>
-        <Button className = "btn modifyPostB" bsStyle="danger" bsSize="small">
-         Delete
-        </Button>
-     
-		<Button className = "btn modifyPostB" bsStyle="info" bsSize="small">
- 		 Edit Post
-		</Button>
-        
+		<li >
+         <Button onClick={()=>{this.deletePost(id)}} className = "btn btn-danger modifyPostB">
+            Delete
+         </Button>
+
+        <Link to={`/EditPost/${id}`} className="btn btn-primary modifyPostB"> Edit Post </Link>
     	</li>
     </ul>
   

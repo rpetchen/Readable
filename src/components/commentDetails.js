@@ -45,9 +45,7 @@ const date = new Date(timestamp).toString().substring(0,15)
           />
       </Button>
      
-        <Button className = "btn modifyPostB" bsStyle="danger" bsSize="small">
-         Delete
-        </Button>
+        
      </div>
 
 
