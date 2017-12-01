@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap'
 import { Field, reduxForm, reset } from 'redux-form'
-import { editComment, addComment } from '../actions/index'
+import { fetchPost } from '../actions/index'
 
 class PostEntry extends Component {
 constructor(props) {
@@ -12,8 +12,18 @@ constructor(props) {
 
 
 submit=()=>{
-  console.log("cool")
+  console.log(this.state)
 }
+
+
+componentDidMount(){
+
+ this.props.fetchPost(this.props.match.params.id) 
+console.log(this.props.match.params.id)
+
+}
+
+
 
 
 renderField = ({ disabled, input, label, type, textarea, meta: { touched, error, warning } }) => {
@@ -35,12 +45,14 @@ renderField = ({ disabled, input, label, type, textarea, meta: { touched, error,
   render() {
 
   
+var {id} = this.props.match.params
+var {initialValues} = this.props
 
-  var {id} = this.props
-  const { handleSubmit} = this.props
+
+    const { handleSubmit} = this.props
     return (
-
-   		
+      <div>
+      
              <form onSubmit={ handleSubmit(this.submit) }>
                
                 <div>
@@ -70,7 +82,7 @@ renderField = ({ disabled, input, label, type, textarea, meta: { touched, error,
             
                 <button type="submit">Submit</button>
               </form>
-         
+         </div>
 
 
     );
@@ -79,20 +91,21 @@ renderField = ({ disabled, input, label, type, textarea, meta: { touched, error,
 
 
  
- const mapStateToProps=(state, ownProps)=>{
-  return {
-    initialValues: {
-    body: ownProps.body,
-    author: ownProps.author
-  }
+ const mapStateToProps=({posts}, ownProps)=>{
+
+console.log(ownProps)
+
+  return{
+  initialValues: posts[ownProps.match.params.id]
   }
  }
 
 var PostForm = reduxForm({
   form: 'PostForm',
   enableReinitialize: true,
-  destroyOnUnmount: false
+  destroyOnUnmount: true
 })(PostEntry)
 
 
-export default connect(mapStateToProps, {editComment, addComment})(PostForm)
+
+export default connect(mapStateToProps, {fetchPost})(PostForm)

@@ -6,13 +6,20 @@ export default function(state = {}, action) {
 	switch (action.type) {
 		case FETCH_POSTS:
 			return action.payload
+			
 		case VOTE_POST:
 			return {...state, [action.payload.id] : action.payload}
+			
 		case CAT_POST:
 			return action.payload
+			
 		case FETCH_POST:
+		
+			console.log({...state, [action.payload.id]: action.payload})
 			return {...state, [action.payload.id]: action.payload}
+			
 		case DELETE_POST:
+		
 			let {[action.payload.id]: deletedItem, ...rest} = state
 			return rest
 		default:

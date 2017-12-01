@@ -12,10 +12,15 @@ import reducers from './reducers';
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
 import PageNotFound from './notFound.js'
 import PostForm from './containers/PostForm'
+import { persistStore, persistReducer } from 'redux-persist'
+
+
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(reducers, composeEnhancers(applyMiddleware(promise)))
+
+
 
 
 ReactDOM.render(<Provider store={store}>

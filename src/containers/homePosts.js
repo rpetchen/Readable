@@ -23,8 +23,6 @@ class homePosts extends Component {
 
   componentDidMount() {
     this.props.fetchPosts() 
-    console.log(this.props.history.push)
-    
 }
 
 componentWillReceiveProps(newProps){

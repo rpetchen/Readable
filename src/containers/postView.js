@@ -100,6 +100,7 @@ if (!post){
 
 
  const mapStateToProps=({posts, comments}, ownProps)=>(
+
   {post: posts[ownProps.match.params.id],
   comments: comments}
 )

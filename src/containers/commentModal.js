@@ -103,6 +103,8 @@ renderField = ({ disabled, input, label, type, textarea, meta: { touched, error,
 
  
  const mapStateToProps=(state, ownProps)=>{
+
+  
   return {
     initialValues: {
     body: ownProps.body,

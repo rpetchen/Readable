@@ -102,6 +102,7 @@ let request =  fetch(url+ext, { headers: { 'Authorization': 'ryanP' },
                  credentials: 'include' } )
       .then( (res) => { return(res.json()) })
       .then((data) => {
+        console.log(data)
       return data
        })
 
