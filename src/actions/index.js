@@ -12,6 +12,8 @@ export const DELETE_COMMENT = "delete_comment"
 export const ADD_COMMENT = "add_comment"
 export const VOTE_COMMENT = "vote_comment"
 export const DELETE_POST = "delete_post"
+export const ADD_POST = "add_post"
+export const EDIT_POST = "add_post"
 
 const uuidv1 = require('uuid/v1');
 
@@ -102,7 +104,7 @@ let request =  fetch(url+ext, { headers: { 'Authorization': 'ryanP' },
                  credentials: 'include' } )
       .then( (res) => { return(res.json()) })
       .then((data) => {
-        console.log(data)
+        
       return data
        })
 
@@ -266,6 +268,58 @@ let request =  fetch(url+ext,  {method: "DELETE",
 
   return {
     type: DELETE_POST,
+    payload: request
+  };
+}
+
+
+export function addPost(post, callback){
+
+post.timestamp= Date.now();
+post.id = uuidv1();
+
+const ext = `/posts`;
+
+
+let request =  fetch(url+ext,  {method: "POST",
+         headers: { 'Authorization': 'ryanP',
+                "Content-Type": "application/json" },
+                 credentials: 'include',
+                 body: JSON.stringify(post)})     
+      .then( (res) => { return res.json()})
+      .then((data) => {
+       callback()
+       return data
+       })
+
+
+  return {
+    type: ADD_POST,
+    payload: request
+  };
+
+}
+
+export function editPost(id, post, callback){
+
+const ext = `/posts/${id}`
+console.log(post)
+
+
+let request =  fetch(url+ext,  {method: "PUT",
+         headers: { 'Authorization': 'ryanP',
+                "Content-Type": "application/json" },
+                 credentials: 'include',
+                 body: JSON.stringify(post)}) 
+      .then( (res) => { return res.json()})
+      .then((data) => {
+       callback()
+       return data
+       })
+
+
+  return {
+    type: EDIT_POST,
     payload: request
   };
 }

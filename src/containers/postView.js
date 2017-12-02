@@ -54,9 +54,10 @@ votePost=(id, option)=>{
 }
 
   componentDidMount() {
+    console.log("begin mount fetch")
     this.props.fetchPost(this.props.match.params.id) 
     this.props.fetchComments(this.props.match.params.id) 
-
+    console.log("end mount fetch")
 }
 
 render () {
@@ -80,7 +81,7 @@ if (!post){
       {myComments.concat(Object.values(comments))
         .sort((a,b)=> {
         return b.voteScore - a.voteScore})
-        .map((c, i)=> <ListGroupItem> <CommentDetail vote={voteComment
+        .map((c, i)=> <ListGroupItem key={i}> <CommentDetail vote={voteComment
         } {...c} showModal={this.editComment} deleteComment={this.deleteComment}/> </ListGroupItem> )}
       </ListGroup> :
       <h2> No Comments!</h2> }
@@ -99,11 +100,12 @@ if (!post){
 
 
 
- const mapStateToProps=({posts, comments}, ownProps)=>(
-
-  {post: posts[ownProps.match.params.id],
-  comments: comments}
-)
+ const mapStateToProps=({posts, comments}, ownProps)=>{
+console.log(posts)
+return{
+post: posts[ownProps.match.params.id],
+comments: comments}
+}
 
 
 export default connect(mapStateToProps, { fetchPost, fetchComments, fetchComment, deleteComment, voteComment, votePost})(PostDetails)

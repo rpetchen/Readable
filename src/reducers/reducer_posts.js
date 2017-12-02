@@ -15,7 +15,7 @@ export default function(state = {}, action) {
 			
 		case FETCH_POST:
 		
-			console.log({...state, [action.payload.id]: action.payload})
+			
 			return {...state, [action.payload.id]: action.payload}
 			
 		case DELETE_POST:
