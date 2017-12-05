@@ -1,27 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import './App.css'
+import './App.css';
 import registerServiceWorker from './registerServiceWorker';
-import HomePosts from './containers/homePosts'
-import PostView from './containers/postView'
+import HomePosts from './containers/homePosts';
+import PostView from './containers/postView';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
-import promise from 'redux-promise'
+import promise from 'redux-promise';
 import reducers from './reducers';
-import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
-import PageNotFound from './notFound.js'
-import PostForm from './containers/PostForm'
-import { persistStore, persistReducer } from 'redux-persist'
-
+import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
+import PageNotFound from './notFound.js';
+import PostForm from './containers/PostForm';
 
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(reducers, composeEnhancers(applyMiddleware(promise)))
-
-
-
+const store = createStore(reducers, composeEnhancers(applyMiddleware(promise)));
 
 ReactDOM.render(<Provider store={store}>
 <BrowserRouter>

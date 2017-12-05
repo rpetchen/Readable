@@ -1,58 +1,55 @@
 import React from 'react';
-import { Panel, Button } from 'react-bootstrap'
-import CommentModal from '../containers/commentModal'
+import { Button } from 'react-bootstrap'
 import  FontAwesome from 'react-fontawesome'
 import { connect } from 'react-redux';
 import { voteComment } from '../actions/index'
 
 class CommentDetail extends React.Component{
-  constructor(props) {
-    super(props);
-   
-  }
+//vote method which dispatches a voteComment action with the id and option of the comment the action was performed on
+    vote(option, id) {
+          this.props.voteComment(option, id);
+    }
 
-  vote(option, id){
-    this.props.voteComment(option, id)
-  }
+    render() {
 
-render(){
-var {id, body, author, timestamp, voteScore} = this.props
-const date = new Date(timestamp).toString().substring(0,15)
-	return (
-	
-	<div>
+        const {id, body, author, voteScore} = this.props;
 
-      <h3>{body}</h3>
-      <h4>Comment Author: {author}</h4>
-      <p>Comment creation/edit time: timestamp</p>
-      <p>Vote Score for the comment: {voteScore}</p>
-      <Button onClick={()=> this.props.showModal(id)}> Edit Comment </Button>
-      <Button onClick={()=> this.props.deleteComment(id)} > Delete Comment </Button>
+        return (
 
+            <div>
 
-      <Button onClick={() => this.vote("upVote", id)} className = "btn" bsStyle="default" bsSize="xsmall">
-        <FontAwesome
-            className='fa fa-thumbs-o-up'
-            name='fa-thumbs-o-up'
-            size='lg'
-            />
-      </Button>
-        <Button onClick={() => this.vote("downVote", id)} className = "btn" bsStyle="default" bsSize="xsmall">
-        <FontAwesome
-          className='fa fa-thumbs-o-down'
-          name='fa-thumbs-o-down'
-          size='lg'
-          />
-      </Button>
-     
-        
-     </div>
+                <h3>{body}</h3>
+                <h4>Comment Author: {author}</h4>
+                <p>Comment creation/edit time: timestamp</p>
+                <p>Vote Score for the comment: {voteScore}</p>
+                <Button onClick={() => this.props.showModal(id)}>
+                    Edit Comment
+                </Button>
+                <Button onClick={() => this.props.deleteComment(id)}>
+                    Delete Comment
+                </Button>
 
+                <Button
+                    onClick={() => this.vote("upVote", id)}
+                    className="btn"
+                    bsStyle="default"
+                    bsSize="xsmall">
+                    <FontAwesome className='fa fa-thumbs-o-up' name='fa-thumbs-o-up' size='lg'/>
+                </Button>
+                <Button
+                    onClick={() => this.vote("downVote", id)}
+                    className="btn"
+                    bsStyle="default"
+                    bsSize="xsmall">
+                    <FontAwesome className='fa fa-thumbs-o-down' name='fa-thumbs-o-down' size='lg'/>
+                </Button>
 
-		)
-}
+            </div>
+
+        )
+    }
 }
 
 
 
-export default connect(null,{voteComment})(CommentDetail)
+export default connect(null,{voteComment})(CommentDetail);

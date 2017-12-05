@@ -5,19 +5,18 @@ export default function(state = [], action) {
 	
 	switch (action.type) {
 		case FETCH_COMMENTS:
-			return action.payload
+			return action.payload;
 		case FETCH_COMMENT:
-			return {...state, [action.payload.id] : action.payload}
+			return {...state, [action.payload.id] : action.payload};
 		case EDIT_COMMENT:
-			return {...state, [action.payload.id] : action.payload}
+			return {...state, [action.payload.id] : action.payload};
 		case DELETE_COMMENT:
-			let {[action.payload.id]: deletedItem, ...rest} = state
-			return rest
+			let {[action.payload.id]: deletedItem, ...rest} = state;
+			return rest;
 		case ADD_COMMENT:
-			 return	{...state, [action.payload.id] : action.payload}
+			 return	{...state, [action.payload.id] : action.payload};
 		case VOTE_COMMENT:
-		 	console.log(action)
-			return {...state, [action.payload.id] : action.payload}
+			return {...state, [action.payload.id] : action.payload};
 		default:
 			return state;
 	}
